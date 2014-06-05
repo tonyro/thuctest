@@ -17,23 +17,9 @@ public class ManageRulesPage extends PageObject{
 	@FindBy(name="createRule")
 	private WebElementFacade bCreateRule;
 
-    @FindBy(id="nav_Tasks_link")
-    private WebElementFacade lTasksMenu;
-
-    @FindBy(linkText="Rules")
-    private WebElementFacade lRules;
-
 
     public ManageRulesPage(WebDriver driver) {
         super(driver);
-    }
-
-
-    public boolean task_menu_is_visible() { return lTasksMenu.isVisible(); }
-
-    public void go_to_rules_studio() {
-        lTasksMenu.click();
-        lRules.click();
     }
 	
 	public void click_create_rule_button() {

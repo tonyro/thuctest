@@ -6,6 +6,7 @@ import static net.thucydides.core.matchers.BeanMatchers.the;
 import static org.hamcrest.Matchers.is;
 
 import net.thucydides.core.pages.components.HtmlTable;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import net.thucydides.core.pages.PageObject;
@@ -22,21 +23,23 @@ public class RuleDesignerPage extends PageObject {
 
     //TODO Put all verify_tab methods into one. Need to decide how to manage choice of tab to check: as a parameters?
 
+    private static WebElement expressionArea;
+
     @FindBy(xpath = "//div[6]/div/div/div/div[2]/p[1]")
     private WebElementFacade tileText;
 
-    @FindBy(xpath = "//div[@id='designSurface']/div/div/div[2]")
-    private WebElementFacade expressionArea;
+//    @FindBy(xpath = "//div[@id='designSurface']/div/div/div[2]")
+//    private WebElementFacade expressionArea;
 
     @FindBy(css = "input.input-sm")
     private WebElementFacade eTextDataInput;
 
     // Tiles
 
-    @FindBy(className = "btn comp compare lt ui-draggable")
+    @FindBy(xpath = "/html/body/div/div[2]/div/div[2]/div/div[2]/p[1]")
     private WebElementFacade tileLessThan;
 
-    @FindBy(className = "btn group current-date ui-draggable")
+    @FindBy(xpath = "/html/body/div/div[6]/div/div[2]/div/div[2]/p[1]")
     private WebElementFacade tileCurrentDate;
 
     // Tabs
@@ -91,9 +94,12 @@ public class RuleDesignerPage extends PageObject {
     private WebElementFacade eEmailMessage;
 
 
+    // Constructor
+
     public RuleDesignerPage(WebDriver driver) {
         super(driver);
     }
+
 
     public boolean is_text_data_available() {
         return eTextDataInput.isCurrentlyEnabled();
@@ -148,20 +154,23 @@ public class RuleDesignerPage extends PageObject {
     }
 
     public void drag_n_drop_from_items_to_expression_area(String...itemNames) {
-        for (String itemName: itemNames){
-            switch (itemName) {
+        for (int i = 0; i < itemNames.length; i++){
+            switch (itemNames[i]) {
                 case "<":
+                    expressionArea = getDriver().findElement(By.xpath("//div[@id='designSurface']/div/div/div[" + (i+2) + "]"));
                     drag_and_drop_item(tileLessThan, expressionArea);
                     break;
                 case "Current date":
+                    expressionArea = getDriver().findElement(By.xpath("//div[@id='designSurface']/div/div/div[" + (i+2) + "]"));
                     drag_and_drop_item(tileCurrentDate, expressionArea);
+                    break;
+                case "dtmStrokeOnset":
+                    expressionArea = getDriver().findElement(By.xpath("//div[@id='designSurface']/div/div/div[" + (i+2) + "]"));
+                    drag_and_drop_item_with_table(tblItems, itemNames[i], expressionArea);
                     break;
             }
         }
-    }
-
-    public void drag_n_drop_to_target_area(String itemName) {
-        ;
+        System.out.println();
     }
 
     public void enter_rule_name(String ruleName) {

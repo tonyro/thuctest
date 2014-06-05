@@ -1,5 +1,6 @@
 package my.corp.steps;
 
+import my.corp.pages.HomePage;
 import my.corp.pages.LoginPage;
 import my.corp.pages.ManageRulesPage;
 import my.corp.pages.RuleDesignerPage;
@@ -25,10 +26,16 @@ public class ClinovoUserSteps extends ScenarioSteps {
     private LoginPage onLoginPage() {
         return getPages().get(LoginPage.class);
     }
+
+    private HomePage onHomePage() {
+        return getPages().get(HomePage.class);
+    }
+
     private ManageRulesPage onManageRulesPage() {
         return getPages().get(ManageRulesPage.class);
     }
-    private RuleDesignerPage onRuleDesignerPage() { return getPages().get(RuleDesignerPage.class); }
+    private RuleDesignerPage onRuleDesignerPage() {
+        return getPages().get(RuleDesignerPage.class); }
 
     
     @Step
@@ -57,12 +64,12 @@ public class ClinovoUserSteps extends ScenarioSteps {
     
     @Step
     public void should_see_task_menu() {
-    	assertThat(onManageRulesPage().task_menu_is_visible()).isTrue();
+    	assertThat(onHomePage().task_menu_is_visible()).isTrue();
     }
     
     @Step
     public void go_to_rules_studio() {
-        onManageRulesPage().go_to_rules_studio();
+        onHomePage().go_to_manage_rules_page();
         onManageRulesPage().click_create_rule_button();
         onRuleDesignerPage().verify_studies_tab();
     }

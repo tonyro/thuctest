@@ -34,7 +34,7 @@ public class CreateNewRuleTest {
         clinovoUser.login_to_cc("root", "Password.001");
         clinovoUser.go_to_rules_studio();
         clinovoUser.navigate_through_tabs("PRO", "Low Dose", "Procedure", "v.1");
-        clinovoUser.build_expression("dtmStrokeOnset", "<", "current_date");
-        System.out.println();
+        clinovoUser.build_expression("dtmStrokeOnset", "<", "Current date");
+        // TODO Put clinovoUser.enter_rule_details(args) here
     }
 }
