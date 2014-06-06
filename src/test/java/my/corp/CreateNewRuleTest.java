@@ -20,6 +20,8 @@ import org.openqa.selenium.WebDriver;
 @RunWith(ThucydidesRunner.class)
 public class CreateNewRuleTest {
 
+    private String[] executeUpons = {"Initial data entry", "Double data entry"};
+
     @Managed(uniqueSession = true)
     public WebDriver webdriver;
 
@@ -35,6 +37,6 @@ public class CreateNewRuleTest {
         clinovoUser.go_to_rules_studio();
         clinovoUser.navigate_through_tabs("PRO", "Low Dose", "Procedure", "v.1");
         clinovoUser.build_expression("dtmStrokeOnset", "<", "Current date");
-        // TODO Put clinovoUser.enter_rule_details(args) here
+        clinovoUser.enter_rule_details("Anton Test Rule 001", "dtmStrokeOnset", "True", executeUpons, "Create discrepancy", "HILFE!");
     }
 }

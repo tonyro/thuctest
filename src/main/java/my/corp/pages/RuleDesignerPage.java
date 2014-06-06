@@ -34,6 +34,9 @@ public class RuleDesignerPage extends PageObject {
     @FindBy(css = "input.input-sm")
     private WebElementFacade eTextDataInput;
 
+    @FindBy(xpath = "/html/body/div/div[4]/div/div[2]/div[2]/div/input")
+    private WebElement targetToArea;
+
     // Tiles
 
     @FindBy(xpath = "/html/body/div/div[2]/div/div[2]/div/div[2]/p[1]")
@@ -81,8 +84,29 @@ public class RuleDesignerPage extends PageObject {
     @FindBy(id="ruleName")
     private WebElementFacade eRuleName;
 
+    @FindBy(id = "evaluateTrue")
+    private WebElementFacade rbEvaluateTrue;
+
+    @FindBy(id = "evaluateFalse")
+    private WebElementFacade rbEvaluateFalse;
+
+    @FindBy(id = "ide")
+    private WebElementFacade cbIDE;
+
+    @FindBy(id = "ae")
+    private WebElementFacade cbAE;
+
     @FindBy(id="dde")
     private WebElementFacade cbDDE;
+
+    @FindBy(id = "dataimport")
+    private WebElementFacade cbDI;
+
+    @FindBy(xpath = "//input[@name='action'][@action='discrepancy']")
+    private WebElementFacade rbCreateDiscrepancy;
+
+    @FindBy(css = "textarea.form-control.input-sm")
+    private WebElementFacade eDiscrepancyText;
 
     @FindBy(xpath = "(//input[@name='action'])[2]")
     private WebElementFacade rbSendEmail;
@@ -158,39 +182,65 @@ public class RuleDesignerPage extends PageObject {
             switch (itemNames[i]) {
                 case "<":
                     expressionArea = getDriver().findElement(By.xpath("//div[@id='designSurface']/div/div/div[" + (i+2) + "]"));
-                    drag_and_drop_item(tileLessThan, expressionArea);
+                    dragAndDropItem(tileLessThan, expressionArea);
                     break;
                 case "Current date":
                     expressionArea = getDriver().findElement(By.xpath("//div[@id='designSurface']/div/div/div[" + (i+2) + "]"));
-                    drag_and_drop_item(tileCurrentDate, expressionArea);
+                    dragAndDropItem(tileCurrentDate, expressionArea);
                     break;
                 case "dtmStrokeOnset":
                     expressionArea = getDriver().findElement(By.xpath("//div[@id='designSurface']/div/div/div[" + (i+2) + "]"));
-                    drag_and_drop_item_with_table(tblItems, itemNames[i], expressionArea);
+                    dragAndDropItemWithTable(tblItems, itemNames[i], expressionArea);
                     break;
             }
         }
-        System.out.println();
     }
 
-    public void enter_rule_name(String ruleName) {
+    public void dragAndDropItemTargetTo(String itemName) {
+        dragAndDropItemWithTable(tblItems, itemName, targetToArea);
+    }
+
+    public void enterRuleName(String ruleName) {
         eRuleName.sendKeys(ruleName);
     }
 
-    public void check_dde_rule() {
-        cbDDE.click();
+    public void checkEvaluatesToRB(String evaluatesTo) {
+        if (evaluatesTo.toLowerCase() == "true")
+            rbEvaluateTrue.click();
+        else if (evaluatesTo.toLowerCase() == "false")
+            rbEvaluateFalse.click();
     }
 
-    public void check_send_email_action() {
-        rbSendEmail.click();
+
+    public void checkExecuteUpons(String[] executeUpons) {
+        for (String executeUpon : executeUpons) {
+            switch (executeUpon) {
+                case "Initial data entry":
+                    cbIDE.click();
+                    break;
+                case "Administrative editing":
+                    cbAE.click();
+                    break;
+                case "Double data entry":
+                    cbDDE.click();
+                    break;
+                case "Data import":
+                    cbDI.click();
+                    break;
+            }
+        }
     }
 
-    public void enter_email_address() {
-        eEmailAddress.sendKeys("tony.rovba@clinovo.com");
+    public void checkActionsRB(String action) {
+        switch (action) {
+            case "Create discrepancy":
+                rbCreateDiscrepancy.click();
+        }
     }
 
-    public void enter_email_message() {
-        eEmailMessage.sendKeys("Test");
+    public void enterDiscrepancyText(String discrepancyText) {
+        if (eDiscrepancyText.isCurrentlyEnabled())
+            eDiscrepancyText.sendKeys(discrepancyText);
     }
 
     private void click_item_in_tab(WebElement tabTable, String itemName) {
@@ -200,14 +250,14 @@ public class RuleDesignerPage extends PageObject {
         targetRow.click();
     }
 
-    private void drag_and_drop_item_with_table(WebElement fromTable, String itemName, WebElement destination) {
+    private void dragAndDropItemWithTable(WebElement fromTable, String itemName, WebElement destination) {
         HtmlTable tempTable = new HtmlTable(fromTable);
         List<WebElement> matchingRows = tempTable.filterRows(the("Name", is(itemName)));
         WebElement targetElement = matchingRows.get(0);
-        drag_and_drop_item(targetElement, destination);
+        dragAndDropItem(targetElement, destination);
     }
 
-    private void drag_and_drop_item(WebElement item, WebElement destination) {
+    private void dragAndDropItem(WebElement item, WebElement destination) {
         (new Actions(getDriver())).dragAndDrop(item, destination).perform();
     }
 }

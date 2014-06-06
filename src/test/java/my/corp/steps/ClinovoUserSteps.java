@@ -7,6 +7,7 @@ import my.corp.pages.RuleDesignerPage;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import net.thucydides.core.steps.ScenarioSteps;
+
 import static org.fest.assertions.Assertions.assertThat;
 
 public class ClinovoUserSteps extends ScenarioSteps {
@@ -90,12 +91,23 @@ public class ClinovoUserSteps extends ScenarioSteps {
     public void build_expression(String...itemNames) {
         onRuleDesignerPage().drag_n_drop_from_items_to_expression_area(itemNames);
     }
+
+    @Step
+    public void enter_rule_details(String ruleName, String targetTo, String evaluateTo, String[] executeUpons, String action, String discrepancyText) {
+        onRuleDesignerPage().enterRuleName(ruleName);
+        onRuleDesignerPage().dragAndDropItemTargetTo(targetTo);
+        onRuleDesignerPage().checkEvaluatesToRB(evaluateTo);
+        onRuleDesignerPage().checkExecuteUpons(executeUpons);
+        onRuleDesignerPage().checkActionsRB(action);
+
+        System.out.println();
+    }
     
     @Step
     public void create_new_rule() {
         onManageRulesPage().click_create_rule_button();
         onRuleDesignerPage().verify_studies_tab();
-       /* onManageRulesPage().enter_rule_name();
+       /* onManageRulesPage().enterRuleName();
         onManageRulesPage().check_dde_rule();
         onManageRulesPage().check_send_email_action();
         onManageRulesPage().enter_email_address();
